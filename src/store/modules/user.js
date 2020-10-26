@@ -20,7 +20,7 @@ export default {
   },
   state: {
     isAuth: true,
-    apiKey: ""
+    apiKey: "aa87e391-9650-11e9-8109-00155d032908"
   },
   getters: {
     isAuth(state) {

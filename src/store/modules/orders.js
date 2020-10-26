@@ -2,9 +2,17 @@ export default {
   actions:{
     async getOrders(context) {
       try {
-        const res = await fetch('http://192.168.0.197:8081/orders')
+
+        console.log('Api key' + context.rootState.user.apiKey);
+
+        const res = await fetch('http://10.1.27.171:8081/v2/orders?apiKey=' + context.rootState.user.apiKey);
         const data = await res.json();
-        context.commit('ordersUpdate', data.value);
+
+        if (!data.isError) {
+          context.commit('ordersUpdate', data.data); 
+        } else {
+          context.commit('setError', data.errors);
+        }
       } catch (e) {
         context.commit('setError', e);
       }
@@ -37,15 +45,18 @@ export default {
   getters: {
     ordersAll(state){
       return state.orders.map((item) => {
-        let date = new Date(item.Date);
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        item.Date = '' + (day < 10 ? '0' + day : day) + '.' + (month < 10 ? '0' + month : month) + '.' + date.getFullYear();
+        //let date = new Date(item.Date);
+        //let day = date.getDate();
+        //let month = date.getMonth() + 1;
+        //item.Date = '' + (day < 10 ? '0' + day : day) + '.' + (month < 10 ? '0' + month : month) + '.' + date.getFullYear();
         return item;
       });
     },
     ordersAccept(state) {
-      return state.orders.filter((item) => {return item.Number == "010210103" || item.Number == "010214779"});
+      return state.orders.filter((item) => {return item.statusName == "В пути"});
+    },
+    ordersGiveOut(state) {
+      return state.orders.filter((item) => {return item.statusName == "На терминале (ПВЗ)"});
     },
     ordersTab(state) {
       return state.tabIndex;
