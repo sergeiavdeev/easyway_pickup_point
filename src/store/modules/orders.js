@@ -25,12 +25,8 @@ export default {
               .then(ob => {              
                 context.commit('orderUpdate', {dataName: "contact", data: ob.data, i: i});
               });
-            });
-
-            
+            });            
           });
-
-
         } else {
           context.commit('setError', data.errors);
         }
