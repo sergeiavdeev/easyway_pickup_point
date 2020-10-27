@@ -5,7 +5,7 @@ export default {
       const password = authData.password;
       console.log("login: " + login);
       console.log("password: " + password);
-      context.commit('updateUser', {isAuth: true, apiKey: "kjhsdfkjh"});
+      context.commit('updateUser', {isAuth: true, apiKey: "aa87e391-9650-11e9-8109-00155d032908"});
     },
 
     async exit(context) {

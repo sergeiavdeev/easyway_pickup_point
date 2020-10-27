@@ -3,13 +3,34 @@ export default {
     async getOrders(context) {
       try {
 
-        console.log('Api key' + context.rootState.user.apiKey);
+        //console.log('Api key' + context.rootState.user.apiKey);
 
         const res = await fetch('http://10.1.27.171:8081/v2/orders?apiKey=' + context.rootState.user.apiKey);
         const data = await res.json();
 
         if (!data.isError) {
           context.commit('ordersUpdate', data.data); 
+          data.data.map(function(el, i) {
+            
+            fetch('http://10.1.27.171:8081/v2/order?id=' + el.id)
+            .then(response => {
+              return response.json();
+            })
+            .then(ob => {              
+              context.commit('orderUpdate', {dataName: "common", data: ob.data, i: i});
+              fetch('http://10.1.27.171:8081/v2/contact?id=' + ob.data.recieverId)
+              .then(response => {
+                return response.json();
+              })
+              .then(ob => {              
+                context.commit('orderUpdate', {dataName: "contact", data: ob.data, i: i});
+              });
+            });
+
+            
+          });
+
+
         } else {
           context.commit('setError', data.errors);
         }
@@ -17,7 +38,7 @@ export default {
         context.commit('setError', e);
       }
     },
-
+    
     ordersSetTab(context, index) {
       context.commit('updateTabIndex', index);
     }
@@ -27,6 +48,11 @@ export default {
       state.orders = orders;
       state.isError = false;
       state.error = "";
+    },
+    orderUpdate(state, data) {      
+      let newOrders = state.orders.slice();
+      newOrders[data.i].[data.dataName] = data.data;
+      state.orders = newOrders;
     },
     updateTabIndex(state, index) {
       state.tabIndex = index;
@@ -44,13 +70,7 @@ export default {
   },
   getters: {
     ordersAll(state){
-      return state.orders.map((item) => {
-        //let date = new Date(item.Date);
-        //let day = date.getDate();
-        //let month = date.getMonth() + 1;
-        //item.Date = '' + (day < 10 ? '0' + day : day) + '.' + (month < 10 ? '0' + month : month) + '.' + date.getFullYear();
-        return item;
-      });
+      return state.orders;
     },
     ordersAccept(state) {
       return state.orders.filter((item) => {return item.statusName == "В пути"});

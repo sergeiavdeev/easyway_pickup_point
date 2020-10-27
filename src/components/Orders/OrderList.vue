@@ -20,20 +20,23 @@
 
         <div v-if="ordersTab==0">
             <div class="card mt-1" v-for="item in ordersAll" v-bind:key="item.id">
-                <p>{{item.id}} статус: {{item.statusName}}</p>
-                <p>{{item.statusId}}</p>
+                <p>{{item.common ? item.common.cargoIndex: ""}} статус: {{item.statusName}}</p>
+                <p>Мест: {{item.common ? item.common.placeCount : ""}}</p>
+                <p>Получатель: {{item.contact ? item.contact.name : ""}}</p>
             </div>
         </div>
         <div v-if="ordersTab==1">
             <div class="card mt-1" v-for="item in ordersAccept" v-bind:key="item.id">
-                <p>{{item.id}} статус: {{item.statusName}}</p>
-                <p>{{item.statusId}}</p>
+                <p>{{item.common ? item.common.cargoIndex: ""}} статус: {{item.statusName}}</p>
+                <p>Мест: {{item.common ? item.common.placeCount : ""}}</p>
+                <p>Получатель: {{item.contact ? item.contact.name : ""}}</p>
             </div>
         </div>
         <div v-if="ordersTab==2">
             <div class="card mt-1" v-for="item in ordersGiveOut" v-bind:key="item.id">
-                <p>{{item.id}} статус: {{item.statusName}}</p>
-                <p>{{item.statusId}}</p>
+                <p>{{item.common ? item.common.cargoIndex: ""}} статус: {{item.statusName}}</p>
+                <p>Мест: {{item.common ? item.common.placeCount : ""}}</p>
+                <p>Получатель: {{item.contact ? item.contact.name : ""}}</p>
             </div>
         </div>
         <div v-if="ordersError">
