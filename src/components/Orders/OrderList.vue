@@ -53,7 +53,9 @@
     computed: mapGetters(["ordersAll", "ordersTab", "ordersAccept", "ordersGiveOut" ,"ordersError", "ordersErrorObject"]),
     methods: mapActions(["getOrders", "ordersSetTab"]),
     mounted() {
-      this.getOrders();
+      if (this.ordersAll.length == 0) {
+        this.getOrders();  
+      }
     }
   }
 </script>
