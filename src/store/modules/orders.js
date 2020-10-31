@@ -1,35 +1,28 @@
+import databse from "./db";
+import api from "./api";
+
 export default {
   actions:{
     async getOrders(context) {
+      
       try {
 
-        //console.log('Api key' + context.rootState.user.apiKey);
+        let db = await databse.get();
+        context.commit('updateDb', db);
+        
+        let orders = await databse.getOrders();
 
-        const res = await fetch('http://10.1.27.171:8081/v2/orders?apiKey=' + context.rootState.user.apiKey);
-        const data = await res.json();
+        if (orders.length > 0) {
+          context.commit('ordersUpdate', orders);  
+        } 
 
-        if (!data.isError) {
-          context.commit('ordersUpdate', data.data); 
-          data.data.map(function(el, i) {
-            
-            fetch('http://10.1.27.171:8081/v2/order?id=' + el.id)
-            .then(response => {
-              return response.json();
-            })
-            .then(ob => {              
-              context.commit('orderUpdate', {dataName: "common", data: ob.data, i: i});
-              fetch('http://10.1.27.171:8081/v2/contact?id=' + ob.data.recieverId)
-              .then(response => {
-                return response.json();
-              })
-              .then(ob => {              
-                context.commit('orderUpdate', {dataName: "contact", data: ob.data, i: i});
-              });
-            });            
-          });
-        } else {
-          context.commit('setError', data.errors);
-        }
+        orders = await api.getOrders(context.rootState.user.apiKey);
+        context.commit('ordersUpdate', orders);
+
+        orders.map(el =>{
+          databse.saveOrder(el);
+        })
+        
       } catch (e) {
         context.commit('setError', e);
       }
@@ -38,6 +31,7 @@ export default {
     ordersSetTab(context, index) {
       context.commit('updateTabIndex', index);
     }
+
   },
   mutations: {
     ordersUpdate(state, orders) {
@@ -49,6 +43,8 @@ export default {
       let newOrders = state.orders.slice();
       newOrders[data.i].[data.dataName] = data.data;
       state.orders = newOrders;
+
+      databse.saveOrder(newOrders[data.i]);      
     },
     updateTabIndex(state, index) {
       state.tabIndex = index;
@@ -56,23 +52,33 @@ export default {
     setError(state, error) {
       state.isError = true;
       state.error = error;
+    },
+    updateDb(state, db) {
+      state.db = db;
     }
   },
   state: {
     orders: [],
     tabIndex: 0,
     isError: false,
+    db: null,
     error: ""
   },
   getters: {
     ordersAll(state){
-      return state.orders;
+      return state.orders.sort((a, b) => {
+        return a.common.ewaId - b.common.ewaId;  
+      });
     },
     ordersAccept(state) {
-      return state.orders.filter((item) => {return item.statusName == "В пути"});
+      return state.orders.filter((item) => {return item.statusName == "В пути"}).sort((a, b) => {
+        return a.common.ewaId - b.common.ewaId;   
+      });
     },
     ordersGiveOut(state) {
-      return state.orders.filter((item) => {return item.statusName == "На терминале (ПВЗ)"});
+      return state.orders.filter((item) => {return item.statusName == "На терминале (ПВЗ)"}).sort((a, b) => {
+        return a.common.ewaId - b.common.ewaId;   
+      });
     },
     ordersTab(state) {
       return state.tabIndex;

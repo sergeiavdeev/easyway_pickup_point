@@ -39,9 +39,6 @@
                 <p>Получатель: {{item.contact ? item.contact.name : ""}}</p>
             </div>
         </div>
-        <div v-if="ordersError">
-            <p>{{ordersErrorObject}}</p>
-        </div>
     </div>
 </template>
 

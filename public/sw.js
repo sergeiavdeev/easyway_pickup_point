@@ -5,7 +5,8 @@ let appShellFiles = [
     './index.html',
     './js/app.js',
     './js/chunk-vendors.js',
-    './favicon.ico'
+    './favicon.ico',
+    './favicon-32x32.png'
 ];
 
 self.addEventListener('install', event => {
@@ -34,14 +35,13 @@ self.addEventListener('fetch', event => {
         caches.match(event.request).then((response) => {
   
           if (response) {
-            console.log('[Service Worker]: returning ' + event.request.url + ' from cache')
-            return response
+            console.log('[Service Worker]: returning ' + event.request.url + ' from cache');
+            return response;
           } else {
-            console.log('[Service Worker]: returning ' + event.request.url + ' from net')
-            return fetch(event.request)
-          }
-  
-          
-        })
+            console.log('[Service Worker]: returning ' + event.request.url + ' from net');
+            return fetch(event.request);
+          }          
+        }
       )
+    );
 });
