@@ -2,14 +2,12 @@ import databse from "./db";
 import api from "./api";
 
 export default {
+  
   actions:{
     async getOrders(context) {
       
       try {
-
-        let db = await databse.get();
-        context.commit('updateDb', db);
-        
+                        
         let orders = await databse.getOrders();
 
         if (orders.length > 0) {
@@ -21,7 +19,7 @@ export default {
 
         orders.map(el =>{
           databse.saveOrder(el);
-        })
+        });
         
       } catch (e) {
         context.commit('setError', e);
@@ -33,37 +31,30 @@ export default {
     }
 
   },
+
   mutations: {
     ordersUpdate(state, orders) {
       state.orders = orders;
       state.isError = false;
       state.error = "";
     },
-    orderUpdate(state, data) {      
-      let newOrders = state.orders.slice();
-      newOrders[data.i].[data.dataName] = data.data;
-      state.orders = newOrders;
-
-      databse.saveOrder(newOrders[data.i]);      
-    },
+    
     updateTabIndex(state, index) {
       state.tabIndex = index;
     },
+
     setError(state, error) {
       state.isError = true;
       state.error = error;
-    },
-    updateDb(state, db) {
-      state.db = db;
     }
   },
   state: {
     orders: [],
     tabIndex: 0,
     isError: false,
-    db: null,
     error: ""
   },
+
   getters: {
     ordersAll(state){
       return state.orders.sort((a, b) => {
