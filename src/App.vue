@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import ('bootstrap');
+import ('bootstrap/dist/css/bootstrap.min.css');
 import NavBar from "@/components/NavBar";
 import AuthForm from "@/components/Auth/AuthForm";
 import OrderList from "@/components/Orders/OrderList";
@@ -42,6 +42,6 @@ export default {
 
 <style>
 body {
-  margin-top: 60px;
+  margin-top: 60px !important;
 }
 </style>

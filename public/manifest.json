@@ -9,7 +9,7 @@
     "theme_color": "#ffffff",
     "icons": [
         {
-            "src": "icons/iconfavicon-32x32.png",
+            "src": "icons/favicon-32x32.png",
             "sizes": "36x36",
             "type": "image/png",
             "density": "0.75"
