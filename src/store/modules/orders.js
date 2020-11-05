@@ -7,7 +7,9 @@ export default {
     async getOrders(context) {
       
       try {
-                        
+        
+        context.commit('setWaiting', true);
+        
         let orders = await databse.getOrders();
 
         if (orders.length > 0) {
@@ -16,6 +18,7 @@ export default {
 
         orders = await api.getOrders(context.rootState.user.apiKey);
         context.commit('ordersUpdate', orders);
+        context.commit('setWaiting', false);
 
         orders.map(el =>{
           databse.saveOrder(el);
@@ -23,6 +26,7 @@ export default {
         
       } catch (e) {
         context.commit('setError', e);
+        context.commit('setWaiting', false);
       }
     },
     
@@ -46,13 +50,18 @@ export default {
     setError(state, error) {
       state.isError = true;
       state.error = error;
+    },
+
+    setWaiting(state, isWaiting) {
+      state.isWaiting = isWaiting;
     }
   },
   state: {
     orders: [],
     tabIndex: 0,
     isError: false,
-    error: ""
+    error: "",
+    isWaiting: false
   },
 
   getters: {
@@ -79,6 +88,9 @@ export default {
     },
     ordersErrorObject(state) {
       return state.error;
+    },
+    ordersIsWaiting(state) {
+      return state.isWaiting;
     }
   }
 }

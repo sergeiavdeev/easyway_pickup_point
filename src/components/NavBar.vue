@@ -5,12 +5,15 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <form class="form-inline w-75 d-lg-none">             
-            <input class="form-control form-control-sm d-lg-none" type="search" placeholder="Поиск" aria-label="Search">               
+            <input class="form-control form-control-sm d-lg-none w-100" type="search" placeholder="Поиск" aria-label="Search" 
+                :value="navSearchText" 
+                @input="navSetSearchText" 
+            />               
         </form> 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item" v-bind:class="{active: navPage == 0}">
-                    <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show" href="#" v-on:click="navSetPage(0)">Грузы<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show" href="#" v-on:click="navSetPage(0)">Грузы</a>
                 </li>
                 <li class="nav-item" v-bind:class="{active: navPage == 1}">
                     <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show" href="#"  v-on:click="navSetPage(1)">Документы</a>
@@ -19,7 +22,10 @@
                     <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show" href="#" v-on:click="navSetPage(2)">Отчеты</a>
                 </li>
             </ul>    
-            <input class="form-control mr-sm-5 ml-sm-5 d-none d-lg-block" type="search" placeholder="Поиск" aria-label="Search">        
+            <input class="form-control mr-sm-5 ml-sm-5 d-none d-lg-block" type="search" placeholder="Поиск" aria-label="Search" 
+                :value="navSearchText" 
+                @input="navSetSearchText" 
+            />        
             <button class="btn btn-outline-light my-2 my-sm-0" type="button" v-on:click="exit">Выйти</button>
         </div>
         
@@ -31,8 +37,8 @@
 
   export default {
     name: "NavBar",
-    computed: mapGetters(["navPage"]),
-    methods: mapActions(["exit", "navSetPage"])
+    computed: mapGetters(["navPage", "navSearchText"]),
+    methods: mapActions(["exit", "navSetPage", "navSetSearchText"])    
   }
 </script>
 
