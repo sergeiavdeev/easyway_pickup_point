@@ -1,30 +1,52 @@
+import databse from "./db";
+import api from "./api";
+
 export default {
   actions: {
     async auth(context, authData) {
       const login = authData.login;
       const password = authData.password;
-      console.log("login: " + login);
-      console.log("password: " + password);
-      context.commit('updateUser', {isAuth: true, apiKey: "aa87e391-9650-11e9-8109-00155d032908"});
+      
+      context.commit('setIsWaiting', true);
+
+      let result = await api.auth(login, password);
+      
+      context.commit('setIsWaiting', false);
+
+      if (result.isError || result.data.addressId == null || result.data.addressId == "") {
+
+        context.commit('updateUser', {isAuth: false, apiKey: ""});
+      } else {
+
+        context.commit('updateUser', {isAuth: !result.isError, apiKey: result.data.addressId});
+      }      
     },
 
     async exit(context) {
-      context.commit('updateUser', {isAuth: false, apiKey: ""})
+      await databse.clearAll();
+      context.commit('updateUser', {isAuth: false, apiKey: ""});
     }
   },
   mutations: {
     updateUser(state, user) {
       state.isAuth = user.isAuth;
       state.apiKey = user.apiKey;
+    },
+    setIsWaiting(state, isWaiting) {
+      state.isWaiting = isWaiting;
     }
   },
   state: {
     isAuth: true,
-    apiKey: "aa87e391-9650-11e9-8109-00155d032908"
+    apiKey: "",
+    isWaiting: false
   },
   getters: {
     isAuth(state) {
-      return state.isAuth;
+      return state.isAuth && state.apiKey !="";
+    },
+    userIsWaiting(state) {
+      return state.isWaiting;
     }
   }
 }

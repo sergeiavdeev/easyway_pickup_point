@@ -1,3 +1,4 @@
+
 const DB_NAME = 'ewa_pickup';
 const STORAGE_NAME = 'orders';
 const DB_VERSION = 1;
@@ -67,5 +68,25 @@ export default {
               }
             }
         });      
+    },
+
+    async clearAll() {
+      
+      let db = await this.get();
+
+      return new Promise((resolve, reject) => {
+
+        let trans = db.transaction([STORAGE_NAME], 'readwrite');
+        trans.oncomplete = () => {
+            resolve();
+        }
+
+        trans.onerror = (err) => {
+            reject(err);
+        }
+        let store = trans.objectStore(STORAGE_NAME);
+        store.clear();
+    });
+
     }
 }

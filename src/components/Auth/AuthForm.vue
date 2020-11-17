@@ -3,20 +3,23 @@
         <h1>Авторизация</h1>
         <div class="form-label-group">
             <input type="text" id="inputEmail" class="form-control" placeholder="Имя пользователя" required=""
-                   autofocus="" v-model="login">
+                   autofocus="" v-model="login" :readonly="userIsWaiting">
             <label for="inputEmail">Имя пользователя</label>
         </div>
         <div class="form-label-group">
-            <input type="password" id="inputPassword" class="form-control" placeholder="Пароль" required="" v-model="password">
+            <input type="password" id="inputPassword" class="form-control" placeholder="Пароль" required="" 
+                v-model="password" :readonly="userIsWaiting">
             <label for="inputPassword">Пароль</label>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" v-on:click="auth({login, password})" type="button">Войти</button>
+        <button class="btn btn-lg btn-primary btn-block mb-3" :disabled="userIsWaiting" v-on:click="auth({login, password})" type="button">Войти</button>
+        <Wait v-if="userIsWaiting"/>
     </form>
 </template>
 
 <script>
 
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
+import Wait from '../Wait';
 
   export default {
     name: "AuthForm",
@@ -26,7 +29,11 @@ import {mapActions} from 'vuex';
         password: ""
       }
     },
-    methods: mapActions(["auth"])
+    components: {
+        Wait
+    },
+    methods: mapActions(["auth"]),
+    computed: mapGetters(["userIsWaiting"])
   }
 </script>
 

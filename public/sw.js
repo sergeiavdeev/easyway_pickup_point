@@ -6,7 +6,8 @@ let appShellFiles = [
     './js/app.js',
     './js/chunk-vendors.js',
     './favicon.ico',
-    './favicon-32x32.png'
+    './favicon-32x32.png',
+    
 ];
 
 self.addEventListener('install', event => {

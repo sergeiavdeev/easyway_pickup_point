@@ -26,7 +26,7 @@
                 :value="navSearchText" 
                 @input="navSetSearchText" 
             />        
-            <button class="btn btn-outline-light my-2 my-sm-0" type="button" v-on:click="exit">Выйти</button>
+            <button class="btn btn-outline-light my-2 my-sm-0" type="button" v-on:click="quit">Выйти</button>
         </div>
         
     </nav>
@@ -38,7 +38,13 @@
   export default {
     name: "NavBar",
     computed: mapGetters(["navPage", "navSearchText"]),
-    methods: mapActions(["exit", "navSetPage", "navSetSearchText"])    
+    methods: {        
+        ... mapActions(["exit", "navSetPage", "navSetSearchText", "clearOrders"]),
+        quit: function() {
+            this.exit();
+            this.clearOrders();
+        },
+    }   
   }
 </script>
 

@@ -58,3 +58,16 @@ app.get('/v2/place', async(req, res) => {
 
   request.end();
 });
+
+app.post('/v2/auth', async(req, res) => {
+  
+  console.log(req.body);
+
+  const request = ewaApi.auth(res, req.body.login, req.body.password);
+
+  request.on('error', error => {
+    res.send(error);  
+  });
+
+  request.end();
+});

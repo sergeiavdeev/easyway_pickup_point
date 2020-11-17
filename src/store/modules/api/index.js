@@ -71,5 +71,26 @@ export default {
         });        
 
         return order;
+    },
+
+    async auth(login, password) {
+
+        console.log(JSON.stringify({login: login, password: password}));
+
+        const response = await fetch(API_PATH + 'auth', {
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({login: login, password: password})
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log(result);
+            return result;
+            
+        }
+
+        return {isError: true};
     }
 }

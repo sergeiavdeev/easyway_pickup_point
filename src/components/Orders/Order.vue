@@ -1,13 +1,35 @@
 <template>
-    <div class="card mt-2">
-        <div class="card-header">{{index}} мест: {{placeCount}}</div>
-        <div class="card-body">                        
-            <p>Получатель: {{reciever}}, тел.: {{phone}}</p>
-            <p>К оплате: {{toPay}}</p>                       
+    <div>
+        <div class="card mt-2" role="button" data-toggle="modal" data-target="#exampleModal">
+            <div class="card-header">{{index}} мест: {{placeCount}}</div>
+            <div class="card-body">                        
+                <p>Получатель: {{reciever}}, тел.: {{phone}}</p>
+                <p>К оплате: {{toPay}}</p>                       
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" v-for="item in places" v-bind:key="item.id">{{placeDescription(item)}}</li>            
+            </ul>     
         </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item" v-for="item in places" v-bind:key="item.id">{{placeDescription(item)}}</li>            
-        </ul> 
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">{{index}} мест: {{placeCount}}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                        <button type="button" class="btn btn-success">Выдать</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>    
 </template>
 

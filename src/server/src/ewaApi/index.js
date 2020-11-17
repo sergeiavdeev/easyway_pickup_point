@@ -96,6 +96,7 @@ module.exports={
             filter: "Заявка/Заказчик_Key eq guid'0de29449-476a-11e6-80e6-003048baa05f' and Заявка/АдресПолучения_Key eq guid'" + apiKey + "' and (ТипСобытия_EWA_Key  eq guid'b3e0596a-6b97-11e6-80e9-003048baa05f' or ТипСобытия_EWA_Key eq guid'675f4358-6f61-11e6-80ea-003048baa05f' or ТипСобытия_EWA_Key eq guid'675f4358-6f61-11e6-80ea-003048baa05f' or ТипСобытия_EWA_Key eq guid'fa32cea9-3996-11e9-80fc-00155d032908')",
             expand: "ТипСобытия_EWA"    
           });
+        this.options.method = "GET";
 
         return https.request(this.options, res => {
     
@@ -275,5 +276,41 @@ module.exports={
               response.send(d);
             });    
           });
+    },
+
+    auth: function(response, login, password) {
+      
+      this.options.path = "/EasyWay/hs/EWA_API/lk/autorization";
+      this.options.method = "POST";
+      this.options.headers =  {
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + Buffer.from(login + ":" + password).toString("base64")
+      };
+      
+      return https.request(this.options, res => {
+        var body = "";
+        var result = {isError: true, data: null, errors: []};
+
+        res.on('data', d => {
+          body += d;
+        });
+
+        res.on('end', () => {
+                    
+          try {
+            var reqOb = JSON.parse(body);
+            result.isError = false;
+            result.data = reqOb;            
+          } catch(e) {
+            result.errors.push(e);
+          }
+          response.send(result);
+        });
+
+        res.on('error', e => {
+          result.errors.push(e);
+          response.send(result);
+        });
+      });
     }
 } 

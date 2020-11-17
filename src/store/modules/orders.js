@@ -32,6 +32,10 @@ export default {
     
     ordersSetTab(context, index) {
       context.commit('updateTabIndex', index);
+    },
+
+    clearOrders(context) {
+      context.commit('ordersClear');
     }
 
   },
@@ -54,6 +58,10 @@ export default {
 
     setWaiting(state, isWaiting) {
       state.isWaiting = isWaiting;
+    },
+
+    ordersClear(state) {
+      state.orders = [];
     }
   },
   state: {
