@@ -26,6 +26,7 @@ export default {
         request.onupgradeneeded = (event) => {
             let db = event.target.result;
             db.createObjectStore(STORAGE_NAME, { keyPath: 'id' });
+            return resolve(db);
         }
       });
     },
@@ -38,7 +39,7 @@ export default {
 
             let trans = db.transaction([STORAGE_NAME], 'readwrite');
             trans.oncomplete = () => {
-                resolve()
+                resolve();
             }
 
             trans.onerror = (err) => {

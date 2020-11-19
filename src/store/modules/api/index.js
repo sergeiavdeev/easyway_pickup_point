@@ -59,7 +59,7 @@ export default {
 
     async getPlace(order) {
 
-        order.common.places.map(async el => {
+        await Promise.all(order.common.places.map(async el => {
             const res = await fetch(API_PATH + 'place?id=' + el.id);
             const result = await res.json();   
             
@@ -68,7 +68,7 @@ export default {
                 Object.assign(el, place);
             }
             return el;
-        });        
+        }));        
 
         return order;
     },

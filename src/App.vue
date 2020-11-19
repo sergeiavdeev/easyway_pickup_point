@@ -30,7 +30,7 @@ import {mapGetters} from 'vuex';
 
 export default {
   name: 'App',
-  computed: mapGetters(["isAuth", "navPage"]),
+  computed: mapGetters(["isAuth", "navPage", "navSearchText"]),
   components: {
     NavBar,
     AuthForm,

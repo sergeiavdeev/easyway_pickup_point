@@ -7,7 +7,7 @@
                 <p>К оплате: {{toPay}}</p>                       
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item" v-for="item in places" v-bind:key="item.id">{{placeDescription(item)}}</li>            
+                <li class="list-group-item" v-for="place in places" v-bind:key="place.id">{{placeDescription(place)}}</li>            
             </ul>     
         </div>
 
@@ -70,14 +70,15 @@ export default {
 
         places: function() {
             let order = this.order;
-            return order.common ? order.common.places : 0;   
+            return order.common ? order.common.places : [];   
         }
+        
     },
     methods: {
-        placeDescription: function(place) {
+        placeDescription: function(place) {      
             return "ШК: " + place.barcode + ", вес: " + place.weight + ", (ДхШхВ): " + 
                 place.length + "x" + place.width + "x" + place.height;
-        }
+        }    
     },
     mounted() {
 

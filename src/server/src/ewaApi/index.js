@@ -88,12 +88,13 @@ module.exports={
         }                 
     },
 
+    //Выдан - b3e0596a-6b97-11e6-80e9-003048baa05f
     getOrders: function(response, apiKey) {
 
         this.options.path = this.query({
             table: "InformationRegister_События_EWA/SliceLast()",
             fields: "Period, Заявка_Key, ТипСобытия_EWA/Description, ТипСобытия_EWA_Key",
-            filter: "Заявка/Заказчик_Key eq guid'0de29449-476a-11e6-80e6-003048baa05f' and Заявка/АдресПолучения_Key eq guid'" + apiKey + "' and (ТипСобытия_EWA_Key  eq guid'b3e0596a-6b97-11e6-80e9-003048baa05f' or ТипСобытия_EWA_Key eq guid'675f4358-6f61-11e6-80ea-003048baa05f' or ТипСобытия_EWA_Key eq guid'675f4358-6f61-11e6-80ea-003048baa05f' or ТипСобытия_EWA_Key eq guid'fa32cea9-3996-11e9-80fc-00155d032908')",
+            filter: "Заявка/Заказчик_Key eq guid'0de29449-476a-11e6-80e6-003048baa05f' and Заявка/АдресПолучения_Key eq guid'" + apiKey + "' and (ТипСобытия_EWA_Key eq guid'675f4358-6f61-11e6-80ea-003048baa05f' or ТипСобытия_EWA_Key eq guid'b122101b-6f61-11e6-80ea-003048baa05f' or ТипСобытия_EWA_Key eq guid'fa32cea9-3996-11e9-80fc-00155d032908')",
             expand: "ТипСобытия_EWA"    
           });
         this.options.method = "GET";

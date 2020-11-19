@@ -12,7 +12,7 @@
             <label for="inputPassword">Пароль</label>
         </div>
         <button class="btn btn-lg btn-primary btn-block mb-3" :disabled="userIsWaiting" v-on:click="auth({login, password})" type="button">Войти</button>
-        <Wait v-if="userIsWaiting"/>
+        <Wait v-if="userIsWaiting" />
     </form>
 </template>
 
@@ -25,8 +25,8 @@ import Wait from '../Wait';
     name: "AuthForm",
     data: () => {
       return {
-        login: "",
-        password: ""
+        login: "ЯНВАРЬ1",
+        password: "DGEFDKWO"
       }
     },
     components: {

@@ -2,14 +2,14 @@
     <div class="">
         <Wait v-if="ordersIsWaiting" />        
         <div v-if="ordersTab==0">            
-            <Order v-for="item in ordersAll" v-bind:key="item.id" v-bind:order="item"/>            
-        </div>
-        <div v-if="ordersTab==1">
-            <Order v-for="item in ordersAccept" v-bind:key="item.id" v-bind:order="item"/>
-        </div>
+            <Order v-for="item in allFilter" v-bind:key="item.id" v-bind:order="item"/>            
+        </div>       
         <div v-if="ordersTab==2">
-            <Order v-for="item in ordersGiveOut" v-bind:key="item.id" v-bind:order="item"/>
+            <Order v-for="item in giveOutFilter" v-bind:key="item.id" v-bind:order="item"/>
         </div>        
+         <div v-if="ordersTab==3">
+            <Order v-for="item in acceptFilter" v-bind:key="item.id" v-bind:order="item"/>
+        </div>
     </div>
 </template>
 
@@ -20,8 +20,35 @@
 
   export default {
     name: "OrderList",
-    computed: mapGetters(["ordersAll", "ordersTab", "ordersAccept", "ordersGiveOut" ,"ordersError", "ordersErrorObject", "ordersIsWaiting"]),
-    methods: mapActions(["getOrders", "ordersSetTab"]),
+    computed: {
+      ...mapGetters(["ordersAll", "ordersTab", "ordersAccept", "ordersGiveOut" ,"ordersError", "ordersErrorObject", "ordersIsWaiting", "navSearchText"]),
+      allFilter: function() {
+        return this.ordersAll.filter((item) => {
+          return this.search(item);
+        });
+      },
+      giveOutFilter: function() {
+        return this.ordersGiveOut.filter((item) => {
+          return this.search(item);
+        });
+      },
+      acceptFilter: function() {
+        return this.ordersAccept.filter((item) => {
+          return this.search(item);
+        });
+      }
+      },
+    methods: {
+      ...mapActions(["getOrders", "ordersSetTab"]),
+
+      search: function(order) {
+        if (this.navSearchText != "") {
+            return order.common.cargoIndex.toUpperCase().includes(this.navSearchText.toUpperCase()) || 
+              order.contact.name.toUpperCase().includes(this.navSearchText.toUpperCase())
+        }
+        return true;  
+      }
+    },
     components: {
         Order,
         Wait

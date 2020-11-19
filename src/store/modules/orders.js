@@ -15,7 +15,7 @@ export default {
         if (orders.length > 0) {
           context.commit('ordersUpdate', orders);  
         } 
-
+        
         orders = await api.getOrders(context.rootState.user.apiKey);
         context.commit('ordersUpdate', orders);
         context.commit('setWaiting', false);
