@@ -36,8 +36,11 @@ export default {
 
     clearOrders(context) {
       context.commit('ordersClear');
-    }
+    },
 
+    ordersSetCheck(context, orderPlaces) {
+      context.commit('setCheck', orderPlaces);
+    }
   },
 
   mutations: {
@@ -62,6 +65,21 @@ export default {
 
     ordersClear(state) {
       state.orders = [];
+    },
+
+    setCheck(state, orderPlaces) {
+      let i = state.orders.indexOf(orderPlaces.order);
+      let newOrder = state.orders[i];
+      let checkedCount = 0;
+      let orders = state.orders.slice();
+      orderPlaces.places.map((place) => {
+        if (place.checked) {
+          checkedCount ++;
+        }
+      });
+      newOrder.readyToAccept = checkedCount == orderPlaces.places.length;
+      orders[i] = newOrder;
+      state.orders = orders;
     }
   },
   state: {
@@ -69,7 +87,8 @@ export default {
     tabIndex: 0,
     isError: false,
     error: "",
-    isWaiting: false
+    isWaiting: false,
+    hasChecked: false
   },
 
   getters: {
@@ -99,6 +118,15 @@ export default {
     },
     ordersIsWaiting(state) {
       return state.isWaiting;
+    },
+    ordersHasReadyAccept(state) {
+
+      for (var i = 0; i < state.orders.length; i++) {
+        if (state.orders[i].readyToAccept) {
+          return true;
+        }
+      }
+      return false;
     }
   }
 }

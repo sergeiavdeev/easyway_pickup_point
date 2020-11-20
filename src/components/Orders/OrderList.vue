@@ -10,6 +10,7 @@
          <div v-if="ordersTab==3">
             <Order v-for="item in acceptFilter" v-bind:key="item.id" v-bind:order="item"/>
         </div>
+        <p v-if="ordersHasReadyAccept">Есть чего принять</p>
     </div>
 </template>
 
@@ -21,7 +22,7 @@
   export default {
     name: "OrderList",
     computed: {
-      ...mapGetters(["ordersAll", "ordersTab", "ordersAccept", "ordersGiveOut" ,"ordersError", "ordersErrorObject", "ordersIsWaiting", "navSearchText"]),
+      ...mapGetters(["ordersAll", "ordersTab", "ordersAccept", "ordersGiveOut" ,"ordersError", "ordersErrorObject", "ordersIsWaiting", "navSearchText", "ordersHasReadyAccept"]),
       allFilter: function() {
         return this.ordersAll.filter((item) => {
           return this.search(item);
